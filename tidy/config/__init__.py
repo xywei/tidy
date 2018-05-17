@@ -31,8 +31,12 @@ def merge_dicts(*dict_args):
     return result
 
 def load_json_config(filename):
-    """Load a json config file.
+    """Load a json config file. Return an empty dict if
+    the file does not exist.
     """
+    if not os.path.isfile(filename):
+        return {}
+
     with open(filename) as json_data_file:
         data = json.load(json_data_file)
     return data
