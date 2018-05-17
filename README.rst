@@ -1,6 +1,8 @@
 Tidy
 ====
 
+**NOTE: Tidy is still in its pre-alpha (development) stage.**
+
 Tidy is a document manager written in Python 3. The command line
 interface for Tidy is `tid`. See `tid --help` for usage info.
 
