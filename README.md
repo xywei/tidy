@@ -12,13 +12,13 @@ file `collection.json`.
 
 To create an empty new collection, run
 ```bash
-$ tid new collection CollectionName
+$ tid init CollectionName
 ```
 
 ## Collections
 
 Each collection is assigned a [UUID](https://tools.ietf.org/html/rfc4122.html)
-(universally unique identifier)
+(universally unique identifier).
 
 ## Adding files
 

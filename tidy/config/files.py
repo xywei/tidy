@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 __copyright__ = "Copyright (C) 2018 Xiaoyu Wei"
 
 __license__ = """
@@ -17,15 +15,17 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from distutils.core import setup
+import os.path
+from os import environ
 
-setup(name='Tidy',
-      version='0.0.1',
-      description='Minimalistic document management',
-      author='Xiaoyu Wei',
-      author_email='xywei@pm.me',
-      url='tidy.wxyzg.com',
-      packages=['tidy', ],
-      scripts=['tidy/cli/tid', ],
-      install_requires=['docopt', ],
-     )
+file_type = 'json'
+
+# Latter ones overwrite ealier ones
+file_list = [os.path.realpath(__file__)[:-8] + 'default_config.json', ]
+
+if "XDG_CONFIG_HOME" in os.environ:
+    user_config_file = os.path.expandvars('$XDG_CONFIG/tidy/config.json')
+else:
+    user_config_file = os.path.expanduser('~/.config/tidy/config.json')
+
+file_list.append(user_config_file)

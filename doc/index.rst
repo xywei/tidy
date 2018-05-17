@@ -1,7 +1,7 @@
 Welcome to Tidy's documentation!
 ================================
 
-Tidy is a document manager.
+Tidy is a flexible document manager.
 
 Table of contents
 =================
@@ -12,6 +12,7 @@ Table of contents
 
   tutorial
   collection
+  tag
 
 * :ref:`genindex`
 * :ref:`modindex`

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 __copyright__ = "Copyright (C) 2018 Xiaoyu Wei"
 
 __license__ = """
@@ -17,15 +15,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from distutils.core import setup
+class CollectionBase(object):
+    def __init__(self):
+        self.is_connected = False
 
-setup(name='Tidy',
-      version='0.0.1',
-      description='Minimalistic document management',
-      author='Xiaoyu Wei',
-      author_email='xywei@pm.me',
-      url='tidy.wxyzg.com',
-      packages=['tidy', ],
-      scripts=['tidy/cli/tid', ],
-      install_requires=['docopt', ],
-     )
+    def connect(self, collection_name):
+        pass
+
+
+
