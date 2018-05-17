@@ -15,9 +15,5 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-__all__ = [
-        'collection',
-        'config',
-        'exception',
-        'version'
-        ]
+VERSION = (2018, 5)
+VERSION_TEXT = ".".join(str(i) for i in VERSION)

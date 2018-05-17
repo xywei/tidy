@@ -1,4 +1,4 @@
 Collections
 ===========
 
-Collections are datavases.
+Collections are databases.

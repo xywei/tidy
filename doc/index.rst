@@ -12,7 +12,6 @@ Table of contents
 
   tutorial
   collection
-  tag
 
 * :ref:`genindex`
 * :ref:`modindex`

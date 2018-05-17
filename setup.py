@@ -17,15 +17,55 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from distutils.core import setup
+from setuptools import setup, find_packages
+
+version_dict = {}
+init_filename = "tidy/version.py"
+with open(init_filename, 'r') as init_file:
+    exec(compile(init_file.read(), init_filename, mode='exec'),
+            version_dict)
 
 setup(name='Tidy',
-      version='0.0.1',
-      description='Minimalistic document management',
+      version=version_dict['VERSION_TEXT'],
+      description='Minimalistic document management system',
+      long_description=open("README.rst", "rt").read(),
       author='Xiaoyu Wei',
       author_email='xywei@pm.me',
+      license="GPLv3",
       url='tidy.wxyzg.com',
-      packages=['tidy', ],
+      classifiers=[
+          'Development Status :: 2 - Pre-Alpha',
+          'Environment :: Console',
+          'Intended Audience :: Developers',
+          'Intended Audience :: End Users/Desktop',
+          'Intended Audience :: Other Audience',
+
+          'Natural Language :: English',
+          'Programming Language :: Python',
+          'Programming Language :: Python :: 3.6',
+          'Programming Language :: Python :: 3.7',
+          'Programming Language :: SQL',
+
+          'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+
+          'Operating System :: MacOS',
+          'Operating System :: POSIX',
+          'Operating System :: POSIX :: BSD',
+          'Operating System :: POSIX :: Linux',
+
+          'Topic :: Database',
+          'Topic :: System :: Archiving',
+          'Topic :: Utilities',
+          ],
+
+      packages=find_packages(),
+
       scripts=['tidy/cli/tid', ],
-      install_requires=['docopt', ],
+
+      install_requires=[
+          'docopt',
+          'pytest',
+          'sphinx',
+          'sphinx_rtd_theme',
+          ],
      )

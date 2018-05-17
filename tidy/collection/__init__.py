@@ -47,13 +47,13 @@ def preload_checks(*, collection_path, lock_path, info_path, db_path, data_dir,
         raise TidyCollectionDirectoryStructureError(
                 collection_path, why)
 
-    elif not os.path.isdir(data_dir)
+    elif not os.path.isdir(data_dir):
         why = "missing data directory"
         raise TidyCollectionDirectoryStructureError(
                 collection_path, why)
 
     elif os.path.isfile(lock_path):
-        with lock_file = open(collection_path + '/access.lock'):
+        with open(collection_path + '/access.lock') as lock_file:
             lock_info = lock_file.read()
         raise TidyCollectionLockError(collection_path, lock_info)
 

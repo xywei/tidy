@@ -19,17 +19,6 @@ import json
 from os import environ
 import os.path
 
-import tidy.config.files as config_files
-
-def merge_dicts(*dict_args):
-    """Shallow copy and merge dicts into a new dict,
-    precedence goes to key value pairs in latter dicts.
-    """
-    result = {}
-    for dictionary in dict_args:
-        result.update(dictionary)
-    return result
-
 def load_json_config(filename):
     """Load a json config file. Return an empty dict if
     the file does not exist.
@@ -41,41 +30,66 @@ def load_json_config(filename):
         data = json.load(json_data_file)
     return data
 
-if config_files.file_type == 'json':
-    full_configs = [load_json_config(filename) for filename
-            in config_files.file_list]
-else:
-    raise NotImplementedError
-
-active_configs = merge_dicts(*full_configs)
-
-# Postprocess for XDG base directories
-
-if active_configs['use_default_data_dir']:
-    """Where user-specific data files should be written.
+def merge_dicts(self, *dict_args):
+    """Shallow copy and merge dicts into a new dict,
+    precedence goes to key value pairs in latter dicts.
     """
-    if "XDG_DATA_HOME" in os.environ:
-        active_configs['data_dir'] = os.path.expandvars('$XDG_DATA_HOME/tidy/')
-    else:
-        active_configs['data_dir'] = os.path.expanduser('~/.local/share/tidy/')
-else:
-    pass
+    result = {}
+    for dictionary in dict_args:
+        result.update(dictionary)
+    return result
 
-if active_configs['use_default_cache_dir']:
-    """Where user-specific non-essential (cached) data should be written.
-    """
-    if "XDG_CACHE_HOME" in os.environ:
-        active_configs['cache_dir'] = os.path.expandvars('$XDG_CACHE_HOME/tidy/')
-    else:
-        active_configs['cache_dir'] = os.path.expanduser('~/.cache/tidy/')
-else:
-    pass
 
-if active_configs['use_default_runtime_dir']:
-    """Used for non-essential, user-specific data files such as sockets,
-    named pipes, etc.
+class ConfigHandler(object):
+    """Manages Tidy's configurations.
     """
-    if "XDG_RUNTIME_DIR" in os.environ:
-        active_configs['runtime_dir'] = os.path.expandvars('$XDG_RUNTIME_DIR/tidy/')
-    else:
-        active_configs['runtime_dir'] = os.path.expanduser('/tmp/tidy/')
+
+    def __init__(self, config_files):
+        """Initialize with a list of config files.
+        Config files are simple json files.
+        """
+        self.config_files = config_files
+        self.full_configs = [load_json_config(filename) for filename
+            in self.config_files]
+        self.active_configs = merge_dicts(*self.full_configs)
+        self.postprocess_active_configs()
+
+    def postprocess_active_configs(self):
+        """Postprocess for XDG base directories
+        """
+        if self.active_configs['use_default_data_dir']:
+            """Where user-specific data files should be written.
+            """
+            if "XDG_DATA_HOME" in os.environ:
+                self.active_configs['data_dir'] = os.path.expandvars(
+                    '$XDG_DATA_HOME/tidy/')
+            else:
+                self.active_configs['data_dir'] = os.path.expanduser(
+                    '~/.local/share/tidy/')
+        else:
+            pass
+
+        if self.active_configs['use_default_cache_dir']:
+            """Where user-specific non-essential (cached) data should be written.
+            """
+            if "XDG_CACHE_HOME" in os.environ:
+                self.active_configs['cache_dir'] = os.path.expandvars(
+                    '$XDG_CACHE_HOME/tidy/')
+            else:
+                self.active_configs['cache_dir'] = os.path.expanduser(
+                    '~/.cache/tidy/')
+        else:
+            pass
+
+        if self.active_configs['use_default_runtime_dir']:
+            """Used for non-essential, user-specific data files such as sockets,
+            named pipes, etc.
+            """
+            if "XDG_RUNTIME_DIR" in os.environ:
+                self.active_configs['runtime_dir'] = os.path.expandvars(
+                    '$XDG_RUNTIME_DIR/tidy/')
+            else:
+                self.active_configs['runtime_dir'] = os.path.expanduser(
+                    '/tmp/tidy/')
+
+# vim: fdm=marker
