@@ -32,7 +32,7 @@ setup(name='Tidy',
       author='Xiaoyu Wei',
       author_email='xywei@pm.me',
       license="GPLv3",
-      url='tidy.wxyzg.com',
+      url='https://tidy.readthedocs.io/',
       classifiers=[
           'Development Status :: 2 - Pre-Alpha',
           'Environment :: Console',
