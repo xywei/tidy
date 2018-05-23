@@ -68,6 +68,7 @@ def preload_checks(*, collection_path, lock_path, info_path, db_path, data_dir,
 
 class Collection(object):
     """Collection class.
+    A collection object must be associated with a specific path.
     """
 
     def __init__(self, collection_path):

@@ -1,9 +1,10 @@
 #!/bin/env python
 """Tidy: a document management system.
-usage: tid [--version] [--tidy-dir=<path>] [--help]
+usage: tid [--version] [--debug] [--tidy-dir=<path>] [--help]
            <command> [<args>...]
 
 Options:
+    -d, --debug           Show debugging info.
     -h, --help            Show this screen.
     -v, --version         Show version.
 
@@ -63,19 +64,62 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 from docopt import docopt
 from subprocess import call
-import tidy.version as version
+from tidy import version
+
+import logging
+logger = logging.getLogger("TIDY")
+
+def log_dict(dictionary, indent=0):
+    """Logging dictionary with indent.
+    """
+    prefix = ''.join('\t' for i in range(indent))
+    return prefix + prefix.join(
+            dictionary.__repr__().splitlines(True)
+            )
+
+def parse_command_args(doc, command, args):
+    """Process Tidy commands with docopt.
+    """
+    logger.debug("Entering Tidy command: " + command)
+    command_args = docopt(doc, argv=[command] + args)
+    logger.debug("Running init command with arguments:\n" +
+            log_dict(command_args, 1))
+    return command_args
 
 if __name__ == '__main__':
 
+    # Parse command line input
     arguments = docopt(__doc__,
-                       version="\n".join(["tid (Tidy) " + version.VERSION_TEXT + "\n",
-                                          __copyright__,
-                                          __license__,
-                                          ]),
+                       version="\n".join(
+                           ["tid (Tidy) " + version.VERSION_TEXT + "\n",
+                               __copyright__,
+                               __license__,
+                               ]),
                        options_first=True)
-    print(arguments)
-    print(arguments['<command>'])
 
-    # refer to https://github.com/docopt/docopt/blob/master/examples/git/git.py
+    # Set logging level
+    if arguments['--debug']:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
+
+    logger.info("This is Tidy, version " + version.VERSION_TEXT)
+    logger.debug("Received global arguments:\n" + log_dict(arguments, 1))
+
+    # Read configs
+    from tidy.config import config_handler
+
+    # Execute command
+    command = arguments['<command>']
+    if command == 'init':
+        from tidy.cli.commands import collection_init
+        cargs = parse_command_args(collection_init.__doc__,
+                command, arguments['<args>'])
+
+    elif command == 'demo':
+        raise NotImplementedError("Demo is not available yet")
+
+    else:
+        raise NotImplementedError("Unknown command: " + command)
 
 # vim: ft=python

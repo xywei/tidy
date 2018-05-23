@@ -19,6 +19,9 @@ import json
 from os import environ
 import os.path
 
+import logging
+import pprint
+logger = logging.getLogger("CONFIG")
 
 def load_json_config(filename):
     """Load a json config file. Return an empty dict if
@@ -32,7 +35,7 @@ def load_json_config(filename):
     return data
 
 
-def merge_dicts(self, *dict_args):
+def merge_dicts(*dict_args):
     """Shallow copy and merge dicts into a new dict,
     precedence goes to key value pairs in latter dicts.
     """
@@ -93,5 +96,13 @@ class ConfigHandler(object):
             else:
                 self.active_configs['runtime_dir'] = os.path.expanduser(
                     '/tmp/tidy/')
+
+
+from tidy.config import files
+logger.debug("Reading config files:\n\t" + "\n\t".join(files.file_list))
+
+config_handler = ConfigHandler(files.file_list)
+logger.debug("Active configs:\n\t" +
+        pprint.pformat(config_handler.active_configs).replace('\n', '\n\t'))
 
 # vim: fdm=marker
