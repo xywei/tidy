@@ -64,8 +64,14 @@ setup(name='Tidy',
 
       install_requires=[
           'docopt',
-          'pytest',
-          'sphinx',
-          'sphinx_rtd_theme',
+          'ocrmypdf',
           ],
+
+      extras_require = {
+          'dev': [
+              'pytest',
+              'sphinx',
+              'sphinx_rtd_theme',
+              ],
+          },
      )
