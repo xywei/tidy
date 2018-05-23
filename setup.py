@@ -69,6 +69,7 @@ setup(name='Tidy',
 
       extras_require={
           'dev': [
+              'autopep8',
               'pytest',
               'sphinx',
               'sphinx_rtd_theme',
