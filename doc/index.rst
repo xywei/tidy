@@ -11,6 +11,7 @@ Table of contents
   :caption: Contents:
 
   tutorial
+  depends
   collection
 
 * :ref:`genindex`
