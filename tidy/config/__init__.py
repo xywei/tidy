@@ -19,6 +19,7 @@ import json
 from os import environ
 import os.path
 
+
 def load_json_config(filename):
     """Load a json config file. Return an empty dict if
     the file does not exist.
@@ -29,6 +30,7 @@ def load_json_config(filename):
     with open(filename) as json_data_file:
         data = json.load(json_data_file)
     return data
+
 
 def merge_dicts(self, *dict_args):
     """Shallow copy and merge dicts into a new dict,
@@ -50,7 +52,7 @@ class ConfigHandler(object):
         """
         self.config_files = config_files
         self.full_configs = [load_json_config(filename) for filename
-            in self.config_files]
+                             in self.config_files]
         self.active_configs = merge_dicts(*self.full_configs)
         self.postprocess_active_configs()
 

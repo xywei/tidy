@@ -20,13 +20,14 @@ import os
 import os.path
 import sqlite3
 from tidy.exception import \
-        TidyCollectionDirectoryStructureError, \
-        TidyCollectionLockError
+    TidyCollectionDirectoryStructureError, \
+    TidyCollectionLockError
 
 # {{{ preload checks
 
+
 def preload_checks(*, collection_path, lock_path, info_path, db_path, data_dir,
-        clone_dir):
+                   clone_dir):
     """Quick checks performed before loading a collection, just to
     gain some confidence that it is indeed a collection path.
     """
@@ -35,22 +36,22 @@ def preload_checks(*, collection_path, lock_path, info_path, db_path, data_dir,
     if not os.path.isdir(collection_path):
         why = "invalid collection path"
         raise TidyCollectionDirectoryStructureError(
-                collection_path, why)
+            collection_path, why)
 
     elif not os.path.isfile(info_path):
         why = "missing collection.json"
         raise TidyCollectionDirectoryStructureError(
-                collection_path, why)
+            collection_path, why)
 
     elif not os.path.isfile(db_path):
         why = "missing sqlite database"
         raise TidyCollectionDirectoryStructureError(
-                collection_path, why)
+            collection_path, why)
 
     elif not os.path.isdir(data_dir):
         why = "missing data directory"
         raise TidyCollectionDirectoryStructureError(
-                collection_path, why)
+            collection_path, why)
 
     elif os.path.isfile(lock_path):
         with open(collection_path + '/access.lock') as lock_file:
@@ -64,25 +65,27 @@ def preload_checks(*, collection_path, lock_path, info_path, db_path, data_dir,
 
 # }}} End preload checks
 
+
 class Collection(object):
     """Collection class.
     """
+
     def __init__(self, collection_path):
         """Constructor.
         """
         self.collection_path = collection_path
         self.lock_path = collection_path + '/access.lock'
         self.info_path = collection_path + '/collection.json'
-        self.db_path   = collection_path + '/meta.sqlite'
-        self.data_dir  = collection_path + '/data/'
+        self.db_path = collection_path + '/meta.sqlite'
+        self.data_dir = collection_path + '/data/'
         self.clone_dir = collection_path + '/clones/'
 
         preload_checks(collection_path=self.collection_path,
-                lock_path=self.lock_path,
-                info_path=self.info_path,
-                db_path=self.db_path,
-                data_dir=self.data_dir,
-                clone_dir=self.clone_dir)
+                       lock_path=self.lock_path,
+                       info_path=self.info_path,
+                       db_path=self.db_path,
+                       data_dir=self.data_dir,
+                       clone_dir=self.clone_dir)
 
     def lock_dir(self):
         """Create access.lock
@@ -101,12 +104,12 @@ class Collection(object):
         with open(self.lock_path, 'r') as lock:
             lock_pid = lock.read()
         pid = os.getpid()
-        if not str(pid)==lock_pid:
+        if not str(pid) == lock_pid:
             raise TidyCollectionLockCorruptionError(
-                    self.collection_path,
-                    "trying to unlock a lock that was set by a "
-                    "different process (I am " + str(pid) + ", "
-                    "but the lock is " + lock_pid + ")")
+                self.collection_path,
+                "trying to unlock a lock that was set by a "
+                "different process (I am " + str(pid) + ", "
+                "but the lock is " + lock_pid + ")")
         else:
             os.remove(self.lock_path)
 

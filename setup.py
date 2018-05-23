@@ -23,7 +23,7 @@ version_dict = {}
 init_filename = "tidy/version.py"
 with open(init_filename, 'r') as init_file:
     exec(compile(init_file.read(), init_filename, mode='exec'),
-            version_dict)
+         version_dict)
 
 setup(name='Tidy',
       version=version_dict['VERSION_TEXT'],
@@ -56,7 +56,7 @@ setup(name='Tidy',
           'Topic :: Database',
           'Topic :: System :: Archiving',
           'Topic :: Utilities',
-          ],
+      ],
 
       packages=find_packages(),
 
@@ -65,13 +65,13 @@ setup(name='Tidy',
       install_requires=[
           'docopt',
           'ocrmypdf',
-          ],
+      ],
 
-      extras_require = {
+      extras_require={
           'dev': [
               'pytest',
               'sphinx',
               'sphinx_rtd_theme',
-              ],
-          },
-     )
+          ],
+      },
+      )

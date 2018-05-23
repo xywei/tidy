@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import pytest
 import traceback
 
+
 def test_import_tidy():
     try:
         import tidy
@@ -26,6 +27,7 @@ def test_import_tidy():
         assert False
 
     assert True
+
 
 @pytest.mark.xfail
 def test_fail_import():
